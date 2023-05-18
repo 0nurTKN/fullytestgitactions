@@ -1,0 +1,19 @@
+name: Add File to Bucket
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  increase-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: updating version
+        run: |
+          git remote set-url origin https://${ADMIN_USER}:${ADMIN_USER_APP_PASSWORD}@bitbucket.org/${BITBUCKET_REPO_OWNER}/$
+          npm version minor -m "v%s"
+          VERSION=$(node -p "require('./package.json').version")
+          git tag ${VERSION}
+          git push origin --tags
+          git push origin --follow-tags
