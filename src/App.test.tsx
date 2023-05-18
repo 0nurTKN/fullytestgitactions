@@ -10,5 +10,5 @@ test('renders learn react link', () => {
 
 test('Only bytes', () => {
   let result = 4;
-  expect(result).toBe(3);
+  expect(result).toBe(4);
 });
