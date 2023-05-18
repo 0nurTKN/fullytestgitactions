@@ -5,29 +5,15 @@ on:
       - development
 
 jobs:
-   versioning_job:
+  increase-version:
     runs-on: ubuntu-latest
-    name: RainMachine Parsers versioning
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Automatic Versioning
-        uses: nicupavel/action-files-version-increment@v3
-      - name: Get the output time
-        run: echo "The time was ${{ steps.versioning_job.outputs.time }}"
-      - name: Get list of modified files
-        run: echo "Modified files ${{ steps.versioning_job.outputs.modified_files }}"
-      - id: commit_if_modified
-        name: Commit metadata file
-        if: steps.versioning_job.outputs.modified_files
+      - uses: actions/checkout@v2
+      - name: updating version
         run: |
-          git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          git config --local user.name "$GITHUB_ACTOR"
-          git commit -am "Versioning for ${{ steps.versioning_job.outputs.modified_files }}"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.head_ref }}
+          git remote set-url origin https://${ADMIN_USER}:${ADMIN_USER_APP_PASSWORD}@bitbucket.org/${BITBUCKET_REPO_OWNER}/$
+          npm version minor -m "v%s"
+          VERSION=$(node -p "require('./package.json').version")
+          git tag ${VERSION}
+          git push origin --tags
+          git push origin --follow-tags
