@@ -5,8 +5,18 @@ on:
       - development
 
 jobs:
+  checkTests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: yarn test
   version:
     runs-on: ubuntu-latest
+    needs: ["checkTests"]
     steps:
       - uses: actions/checkout@v2
       - run: git config user.email "$GITHUB_ACTOR@users.noreply.github.com"

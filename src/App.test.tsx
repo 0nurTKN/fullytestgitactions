@@ -7,3 +7,8 @@ test('renders learn react link', () => {
   const linkElement = screen.getByText(/learn react/i);
   expect(linkElement).toBeInTheDocument();
 });
+
+test('Only bytes', () => {
+  let result = 4;
+  expect(result).toBe(3);
+});
