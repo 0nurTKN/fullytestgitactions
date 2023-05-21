@@ -12,9 +12,9 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+         node-version: ${{ matrix.node-version }}
+         ssh-private-key: ${{ secrets.GH_TOKEN }}
       - run: |
-           git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/$GITHUB_REPOSITORY
            yarn install
            yarn test
   # version:
