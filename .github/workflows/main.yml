@@ -15,12 +15,12 @@ jobs:
       - run: echo "$GITHUB_ACTOR"
       - shell: bash
         run: |
-          expr 3 + 7 > math-homework.txt
+          expr 88888 > new-version.txt
       - name: Upload math result for job 1
         uses: actions/upload-artifact@v3
         with:
-          name: homework
-          path: math-homework.txt
+          name: versions
+          path: new-version.txt
       - run: VERSION=$(node -p "require('./package.json').version")
       - run: git tag ${VERSION}
       - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
@@ -32,10 +32,10 @@ jobs:
       - name: Download math result for job 1
         uses: actions/download-artifact@v3
         with:
-          name: homework
+          name: versions
       - shell: bash
         run: |
-          value=`cat math-homework.txt`
+          value=`cat new-version.txt`
           echo $value
 
   # checkTests:
