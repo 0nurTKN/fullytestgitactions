@@ -13,20 +13,24 @@ jobs:
       - run: echo "$GITHUB_ACTOR@users.noreply.github.com"
       - run: git config user.name "$GITHUB_ACTOR"
       - run: echo "$GITHUB_ACTOR"
-        id: get_new_version
-      - run: echo $(npm version patch -m "v%s")
-      - name: onur
-        run: echo "${{steps.get_new_version.outputs}}"
+      - run: npm version patch -m "v%s"
+      - run: NEW_VERSION=$(npm run version --silent)
+      - run: echo "export VERSION=$NEW_VERSION" >> get_version.sh
       - run: VERSION=$(node -p "require('./package.json').version")
       - run: git tag ${VERSION}
       - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
       - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --tags
-  # updateImportMaps:
-  #   runs-on: ubuntu-latest
-  #   needs: ["version"]
-  #   steps:
-  #     - name: Update Import Map Versions
-  #       run: echo "${{version.steps.get_new_version.outputs.NEW_VERSION}}"
+  updateImportMaps:
+    runs-on: ubuntu-latest
+    needs: ["version"]
+    if: -e get_version.sh
+    steps:
+      - name: Update Import Map Versions
+        run: |
+          cat get_version.sh
+          source get_version.sh
+          fi
+          echo $VERSION
 
   # checkTests:
   #   runs-on: ubuntu-latest
