@@ -20,6 +20,7 @@ jobs:
       - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --tags
   updateImportMaps:
     runs-on: ubuntu-latest
+    needs: ["version"]
     steps:
       - name: Update Import Map Versions
         uses: actions/checkout@v2
