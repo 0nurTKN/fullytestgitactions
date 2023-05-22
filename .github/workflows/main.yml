@@ -21,11 +21,6 @@ jobs:
         with:
           name: homework
           path: math-homework.txt
-      - name: Upload math result for job 1
-        uses: actions/upload-artifact@v1
-        with:
-          name: version
-          path: new_version.txt
       - run: VERSION=$(node -p "require('./package.json').version")
       - run: git tag ${VERSION}
       - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
