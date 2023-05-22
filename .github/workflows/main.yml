@@ -15,8 +15,8 @@ jobs:
       - run: echo "$GITHUB_ACTOR"
       - shell: bash
         run: |
-          expr $(npm version patch -m "v%s") > new-version.txt
-      - name: Upload math result for job 1
+          expr $(npm version patch -m "version inc. to v%s") > new-version.txt
+      - name: Upload result for job 1
         uses: actions/upload-artifact@v3
         with:
           name: versions
