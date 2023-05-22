@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Update Import Map Versions
         uses: actions/checkout@v2
-      - run: VERSION=$(node -p "require('./package.json').version")
+      - run: VERSION=$(npm run version --silent)
       - run: echo "$VERSION"
   # checkTests:
   #   runs-on: ubuntu-latest
