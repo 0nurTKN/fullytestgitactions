@@ -23,7 +23,6 @@ jobs:
   updateImportMaps:
     runs-on: ubuntu-latest
     needs: ["version"]
-    if: test -e ~/get_version.sh
     steps:
       - name: Update Import Map Versions
         run: |
