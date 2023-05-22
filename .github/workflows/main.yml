@@ -16,6 +16,8 @@ jobs:
       - run: npm version patch -m "v%s"
       - run: VERSION=$(node -p "require('./package.json').version")
       - run: git tag ${VERSION}
+        id: get_new_version
+      - run: echo ${VERSION}
       - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
       - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --tags
   updateImportMaps:
@@ -24,8 +26,7 @@ jobs:
     steps:
       - name: Update Import Map Versions
         uses: actions/checkout@v2
-      - run: VERSION=$(node -p "require('./package.json').version")
-      - run: echo $(node -p "require('./package.json').version")
+      - run: echo ${{steps.get_new_version.VERSION}}
   # checkTests:
   #   runs-on: ubuntu-latest
   #   steps:
