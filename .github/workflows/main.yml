@@ -15,8 +15,7 @@ jobs:
       - run: echo "$GITHUB_ACTOR"
       - name: onur
         id: get_new_version
-        run: NEW_VERSION=$(npm version patch -m "v%s")
-      - run: npm version patch -m "v%s"
+        run: echo NEW_VERSION=$(npm version patch -m "v%s") >> "$GITHUB_OUTPUT"
       - run: VERSION=$(node -p "require('./package.json').version")
       - run: git tag ${VERSION}
       - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
@@ -26,7 +25,7 @@ jobs:
     needs: ["version"]
     steps:
       - name: Update Import Map Versions
-        run: echo ${{steps.get_new_version.outputs.NEW_VERSION}}
+        run: echo "${{steps.get_new_version.outputs.NEW_VERSION}}"
 
   # checkTests:
   #   runs-on: ubuntu-latest
